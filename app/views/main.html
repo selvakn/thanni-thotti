@@ -1,0 +1,18 @@
+<div ng-if="tank1">
+  <h4>{{ tank1.name | capitalize }}</h4>
+  <div>
+    <span>Water Level:</span>
+    <span class="value">{{ tank1.level | inFeet }}</span>
+  </div>
+  <div>
+    <span>As of:</span>
+    <span class="value" am-time-ago="tank1.dateObj"></span>
+  </div>
+  <div>
+    <span>Available:</span>
+    <span class="value">{{ tank1.level * tank1.length * tank1.breadth * 0.001 }} litres</span>
+  </div>
+</div>
+<div ng-if="!tank1">
+  Loading...
+</div>
