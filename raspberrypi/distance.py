@@ -35,19 +35,20 @@ def send_to_firebase(tank, distance):
   last_sent_timestamp = firebase_log[tank].get('timestamp', 0)
   last_sent_distance = firebase_log[tank].get('distance', 0)
 
-  logging.debug(firebase_log)
+  logging.debug([timestamp, distance, firebase_log])
+
   if ((timestamp - last_sent_timestamp) >= TIME_INTERVAL_TO_NOTIFY) or (abs(distance - last_sent_distance) >= DISTANCE_CHANGE_TO_NOTIFY):
     datetime_str = datetime.datetime.now().isoformat()
+    firebase_log[tank]['timestamp'] = timestamp
+
     data = {'time': datetime_str, 'timestamp': timestamp, 'distance': distance}
-    logging.debug('Sending to firebase')
     firebase.put('/readings/' + tank + '/', timestamp, data) 
-    time.sleep(2)
   
-  firebase_log[tank] = {'timestamp': timestamp, 'distance': distance}
+  firebase_log[tank]['distance'] = distance
   
 
 GPIO.output(TRIG, False)
-time.sleep(1)
+time.sleep(5)
 
 while 1:
   GPIO.output(TRIG, True)
