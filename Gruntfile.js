@@ -26,6 +26,17 @@ module.exports = function (grunt) {
       dist: 'dist'
     },
 
+    appcache: {
+      options: {
+        basePath: 'dist'
+      },
+      all: {
+        dest: '<%= yeoman.dist %>/manifest.appcache',
+        cache: '<%= yeoman.dist %>/**/*.{js,css}',
+        network: '*'
+      }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -379,7 +390,8 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'appcache:all'
   ]);
 
   grunt.registerTask('default', [
