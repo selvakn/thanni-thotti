@@ -2,9 +2,9 @@
 
 angular.module('thanniThottiApp')
   .controller('MainCtrl', function ($scope, firebaseRef, syncData) {
-    $scope.tank1Readings = syncData('readings/tank1', 1);
+    syncData('readings/tank1', 1).$asObject().$bindTo($scope, 'tank1Readings');
 
-    syncData('meta/tank1').$on('loaded', function(meta){
+    syncData('meta/tank1').$asObject().$loaded().then(function(meta){
       $scope.$watch('tank1Readings', function(){
         var tank1 = $scope.tank1Readings[Object.keys($scope.tank1Readings)[0]];
         angular.extend(tank1, meta);
