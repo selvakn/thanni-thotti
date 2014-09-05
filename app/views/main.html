@@ -1,4 +1,4 @@
-<div ng-if="tank1">
+<div class="details" ng-if="tank1">
   <h4>{{ tank1.name | capitalize }}</h4>
   <div>
     <span>Water Level:</span>
@@ -10,7 +10,7 @@
   </div>
   <div>
     <span>Available:</span>
-    <span class="value">{{ tank1.level * tank1.length * tank1.breadth * 0.001 }} litres</span>
+    <span class="value">{{ (tank1.level * tank1.length * tank1.breadth * 0.001).toFixed() }} litres</span>
   </div>
 </div>
 <div ng-if="!tank1">
