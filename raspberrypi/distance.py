@@ -1,34 +1,23 @@
 #!/usr/bin/env python
-import RPi.GPIO as GPIO
 from firebase import firebase
+import RPi.GPIO as GPIO
 import time
 import datetime
 import signal
 import logging
+
 #import os
 #os.environ["HTTPS_PROXY"] = "http://192.168.2.114:3128"
 
-logging.basicConfig(format='%(asctime)-15s: %(message)s', filename='/var/log/distance/distance.log', level=logging.DEBUG)
-firebase = firebase.FirebaseApplication('https://thanni.firebaseio.com', None)
-
-GPIO.setmode(GPIO.BCM)
 
 TRIG = 23
 ECHO = 24
 DISTANCE_CHANGE_TO_NOTIFY = 5 # in cms
 TIME_INTERVAL_TO_NOTIFY = 30 * 60 # in secs
 
-logging.info("Distance Measurement In Progress")
-
-GPIO.setup(TRIG,GPIO.OUT)
-GPIO.setup(ECHO,GPIO.IN)
-
 def reset_gpio(signal, frame):
   GPIO.cleanup()
 
-signal.signal(signal.SIGINT, reset_gpio)
-
-firebase_log = {'tank1': {}}
 def send_to_firebase(tank, distance):
   global firebase_log
   timestamp = int(time.time())
@@ -46,8 +35,16 @@ def send_to_firebase(tank, distance):
   
   firebase_log[tank]['distance'] = distance
   
-
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(TRIG,GPIO.OUT)
+GPIO.setup(ECHO,GPIO.IN)
 GPIO.output(TRIG, False)
+signal.signal(signal.SIGINT, reset_gpio)
+
+logging.basicConfig(format='%(asctime)-15s: %(message)s', filename='/var/log/distance/distance.log', level=logging.DEBUG)
+firebase = firebase.FirebaseApplication('https://thanni.firebaseio.com', None)
+firebase_log = {'tank1': {}}
+logging.info("Distance Measurement In Progress")
 time.sleep(5)
 
 while 1:
@@ -66,6 +63,5 @@ while 1:
   distance = round(distance, 2)
 
   logging.info("Distance: %s cm",distance)
-  print distance
   send_to_firebase('tank1', distance)
   time.sleep(2)
