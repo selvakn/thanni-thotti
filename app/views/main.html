@@ -1,33 +1,48 @@
 <div class="details" ng-if="tank1">
-  <h4>{{ tank1.name | capitalize }}</h4>
-  <div>
-    <span>Water Level:</span>
-    <span class="value">{{ tank1.level | inFeet }}</span>
+  <div class="text">
+    <h4>{{ tank1.name | capitalize }}</h4>
+    <div>
+      <span>Water Level:</span>
+      <span class="value">{{ tank1.level | inFeet }}</span>
+    </div>
+    <div>
+      <span>As of:</span>
+      <span class="value" am-time-ago="tank1.dateObj"></span>
+    </div>
+    <div>
+      <span>Available:</span>
+      <span class="value">{{ (tank1.level * tank1.length * tank1.breadth * 0.001).toFixed() }} litres</span>
+    </div>
   </div>
-  <div>
-    <span>As of:</span>
-    <span class="value" am-time-ago="tank1.dateObj"></span>
-  </div>
-  <div>
-    <span>Available:</span>
-    <span class="value">{{ (tank1.level * tank1.length * tank1.breadth * 0.001).toFixed() }} litres</span>
+  <div class="visual">
+    <div class="percentage" ng-style="{'background-color': tank1.color, height: '' + (tank1.level/tank1.depth) *100 + '%'}">
+    </div>
   </div>
 </div>
+
 <div class="details" ng-if="tank2">
-  <h4>{{ tank2.name | capitalize }}</h4>
-  <div>
-    <span>Water Level:</span>
-    <span class="value">{{ tank2.level | inFeet }}</span>
+  <div class="text">
+    <h4>{{ tank2.name | capitalize }}</h4>
+    <div>
+      <span>Water Level:</span>
+      <span class="value">{{ tank2.level | inFeet }}</span>
+    </div>
+    <div>
+      <span>As of:</span>
+      <span class="value" am-time-ago="tank2.dateObj"></span>
+    </div>
+    <div>
+      <span>Available:</span>
+      <span class="value">{{ (tank2.level * tank2.length * tank2.breadth * 0.001).toFixed() }} litres</span>
+    </div>
   </div>
-  <div>
-    <span>As of:</span>
-    <span class="value" am-time-ago="tank2.dateObj"></span>
-  </div>
-  <div>
-    <span>Available:</span>
-    <span class="value">{{ (tank2.level * tank2.length * tank2.breadth * 0.001).toFixed() }} litres</span>
+  <div class="visual">
+    <div class="percentage" ng-style="{'background-color': tank2.color, height: '' + (tank2.level/tank2.depth) *100 + '%'}">
+    </div>
   </div>
 </div>
-<div ng-if="!tank1">
+
+
+<div ng-if="!tank2">
   Loading...
 </div>

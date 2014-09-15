@@ -21,5 +21,26 @@ h4 {
 }
 
 .details {
-  max-width: 300px;
+  max-width: 280px;
+  height: 120px;
+  margin-bottom: 20px;
+
+  .text {
+    float: left;
+    width: 250px;
+  }
+
+  .visual {
+    float: right;
+    width: 10px;
+    border: 1px solid;
+    height: 100%;
+    position: relative;
+
+    .percentage {
+      bottom: 0;
+      position: absolute;
+      width: 100%;
+    }
+  }
 }
