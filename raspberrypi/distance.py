@@ -29,7 +29,13 @@ def send_to_firebase(tank, distance):
 
   logging.debug([timestamp, tank, distance])
 
-  if ((timestamp - last_sent_timestamp) >= TIME_INTERVAL_TO_NOTIFY) or (abs(distance - last_sent_distance) >= DISTANCE_CHANGE_TO_NOTIFY):
+  change_in_distance = abs(distance - last_sent_distance)
+
+  if (last_sent_distance != 0 and change_in_distance > 15):
+    logging.debug('^ rejected');
+    return
+
+  if ((timestamp - last_sent_timestamp) >= TIME_INTERVAL_TO_NOTIFY) or (change_in_distance >= DISTANCE_CHANGE_TO_NOTIFY):
     datetime_str = datetime.datetime.now().isoformat()
     firebase_log[tank]['timestamp'] = timestamp
     firebase_log[tank]['distance'] = distance
@@ -72,7 +78,7 @@ while 1:
   distance = round(distance, 2)
 
   send_to_firebase('tank1', distance)
-  time.sleep(2)
+  time.sleep(5)
 
   GPIO.output(TRIG2, True)
   time.sleep(0.00001)
@@ -89,5 +95,5 @@ while 1:
   distance = round(distance, 2)
 
   send_to_firebase('tank2', distance)
-  time.sleep(2)
+  time.sleep(5)
 
